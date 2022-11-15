@@ -37,7 +37,21 @@
       </div>
 
       <div class="p-12 bg-white rounded-md w-[65ch]">
-        <NuxtPage />
+        <NuxtErrorBoundary>
+          <NuxtPage />
+          <template #error="{ error }">
+            <p>
+              Oh on, something wrong with the lesson!
+              <code>{{ error }}</code>
+            </p>
+            <button
+              class="bg-gray-500 text-white mt-3 rounded py-2 px-5"
+              @click="resetError(error)"
+            >
+              Reset
+            </button>
+          </template>
+        </NuxtErrorBoundary>
       </div>
     </div>
   </div>
@@ -45,4 +59,11 @@
 
 <script setup lang="ts">
 const { chapters } = useCourse();
+
+async function resetError(error: any) {
+  await navigateTo(
+    "/course/chapter-1/1-chapter-1/lesson/1-introduction-to-typescript-with-vue-js-3"
+  );
+  error.value = null;
+}
 </script>
